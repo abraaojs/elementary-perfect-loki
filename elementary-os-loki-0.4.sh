@@ -58,9 +58,9 @@ sudo apt-get update
 sudo apt-get install elementary-desktop elementary-tweaks -y
 
 # Numix theme
-sudo add-apt-repository ppa:numix/ppa
+sudo add-apt-repository ppa:numix/ppa -y
 sudo apt-get update
-sudo apt-get install numix-icon-theme-circle numix-folders
+sudo apt-get install numix-icon-theme-circle numix-folders -y
 
 #Themes and Conky
 sudo apt-add-repository ppa:teejee2008/ppa -y
@@ -123,21 +123,20 @@ sudo sed -i "s/StartupWMClass=Google-chrome-stable//g" /usr/share/applications/g
 # bash /tmp/elementary-dropbox/install.sh
 
 #Mailnag
-sudo add-apt-repository ppa:pulb/mailnag
+sudo add-apt-repository ppa:pulb/mailnag -y
 sudo apt-get update
-sudo apt-get install mailnag
+sudo apt-get install mailnag -y
 
 #Sublime3
 sudo add-apt-repository ppa:webupd8team/sublime-text-3 -y
 sudo apt-get update
 sudo apt-get install sublime-text-installer -y
 
-#Install Vim and aptitude
-
-sudo apt-get install aptitude && sudo apt-get install vim -y
+#Install Vim
+sudo apt-get install vim -y
 
 #Install more packages
-sudo apt-get install vim aptitude shutter tomboy
+# sudo apt-get install vim aptitude shutter tomboy -y
 
 #Install screenfetch (my elementary-OS special Version)
 # mkdir screenfetch
