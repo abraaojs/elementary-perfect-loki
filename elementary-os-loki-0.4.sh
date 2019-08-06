@@ -1,4 +1,6 @@
 #!/bin/sh
+# Created by Abraao Silva
+# Date 08-12-2018
 
 # $os=$(lsb_release -i | awk -F"\t" '{print $2}')
 # echo $os
@@ -12,84 +14,78 @@
 #Download Elementary OS from here: 
 #https://elementary.io/
 
+echo "Let us check if your computer is up-to-date and upgrade"
+
 #First you update your system
 sudo apt-get update && sudo apt-get dist-upgrade -y
 
+sudo apt-get install aptitude -y
+
 #Install Google Chrome
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-sudo apt-get update
-sudo apt-get install google-chrome-stable -y
+#wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+#sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+sudo aptitude update
+sudo aptitude install google-chrome-stable -y
 
 # Install Firefox 
-sudo apt-get install firefox -y
+sudo aptitude install firefox -y
 
 #Clean-up System
-sudo apt-get purge midori-granite
-sudo apt-get purge bluez
-sudo apt-get autoremove
-sudo apt-get autoclean
+sudo aptitude purge midori-granite -y
+sudo aptitude purge bluez -y
+sudo aptitude autoremove -y
+sudo aptitude autoclean -y
 
 #Remove some Switchboard Plug's
 sudo rm -rf /usr/lib/plugs/GnomeCC/gnomecc-bluetooth.plug
 sudo rm -rf /usr/lib/plugs/GnomeCC/gnomecc-wacom.plug
 
 #Install File Compression Libs
-sudo apt-get install unace unrar zip unzip xz-utils p7zip-full p7zip-rar sharutils rar uudeview mpack arj cabextract file-roller -y
+sudo aptitude install unace unrar zip unzip xz-utils p7zip-full p7zip-rar sharutils rar uudeview mpack arj cabextract file-roller -y
 
 #Install Ubuntu Restricted Extras
-sudo apt-get install ubuntu-restricted-extras -y
+sudo aptitude install ubuntu-restricted-extras -y
 
 #Enable all Startup Applications
 cd /etc/xdg/autostart
 sudo sed --in-place 's/NoDisplay=true/NoDisplay=false/g' *.desktop
 
 #Install a Firewall Application
-# sudo apt-get install gufw
+# sudo aptitude install gufw
+
+# mvn
+wget -N http://ftp-stud.hs-esslingen.de/pub/Mirrors/ftp.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+sudo tar -zxf apache-maven-3.3.9-bin.tar.gz -C /opt
+printf "export M2_HOME=/opt/apache-maven-3.3.9\nexport PATH=\$PATH:\$M2_HOME/bin" >> /$HOME/.bash_profile
+sudo rm -rf apache-maven-3.3.9-bin.tar.gz
 
 #Install Gimp
 sudo add-apt-repository ppa:otto-kesselgulasch/gimp -y
-sudo apt-get update
-sudo apt-get install gimp gimp-data gimp-plugin-registry gimp-data-extras -y
+sudo aptitude update 
+sudo aptitude install gimp gimp-data gimp-plugin-registry gimp-data-extras -y
 
 #Install Elementary OS extras
-sudo add-apt-repository ppa:mpstark/elementary-tweaks-daily -y
-sudo apt-get update
-sudo apt-get install elementary-desktop elementary-tweaks -y
+sudo -E  add-apt-repository ppa:mpstark/elementary-tweaks-daily -y
+sudo aptitude update
+sudo aptitude install elementary-tweaks -y
 
 # Numix theme
-sudo add-apt-repository ppa:numix/ppa -y
-sudo apt-get update
-sudo apt-get install numix-icon-theme-circle numix-folders -y
-
-#Themes and Conky
-sudo apt-add-repository ppa:teejee2008/ppa -y
-sudo apt-add-repository  ppa:yunnxx/elementary -y
-sudo apt-get update
-sudo apt-get install faba-icon-theme moka-icon-theme faba-mono-icons elementary-transparent-theme conky-manager
+sudo -E add-apt-repository ppa:numix/ppa -y
+sudo aptitude update 
+sudo apt install numix-icon-theme-circle -y
 
 #Install Java 8
-sudo add-apt-repository ppa:webupd8team/java -y
-sudo apt-get update
-sudo apt-get install oracle-java8-installer -y
-
-#Install Skype
-# sudo apt-add-repository "deb http://archive.canonical.com/ubuntu/ trusty partner"
-# sudo apt-get update && sudo apt-get install skype
-# sudo apt-get install gtk2-engines-murrine:i386 gtk2-engines-pixbuf:i386
-
+sudo aptitude install -y python-software-properties debconf-utils -y
+sudo -E add-apt-repository -y ppa:webupd8team/java -y
+sudo aptitude update
+echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections
+sudo aptitude install -y oracle-java8-installer -y
 
 #Install the latest git Version
-sudo add-apt-repository ppa:git-core/ppa -y
-sudo apt-get update
-sudo apt-get install git -y
-
-#Install the latest git Version
-sudo add-apt-repository ppa:git-core/ppa -y
-sudo apt-get update
-sudo apt-get install git -y
-
-sudo apt-get install gitk -y
+sudo -E add-apt-repository ppa:git-core/ppa -y
+sudo aptitude update
+sudo aptitude install git -y
+sudo aptitude install gitk -y
 
 #Install SmartGit
 wget -q http://www.syntevo.com/downloads/smartgit/smartgit-7_0_2.deb 
@@ -98,22 +94,21 @@ rm smartgit-7_0_2.deb
 
 #if not installed 
 #Install the Dynamic Kernel Module Support Framework
-sudo apt-get install dkms -y
+sudo aptitude install dkms -y
 
 
 #Install the latest Version of VirtualBox
 # wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | sudo apt-key add -
 # sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian trusty contrib" >> /etc/apt/sources.list.d/virtualbox.list'
-# sudo apt-get update
-# sudo apt-get install virtualbox-5.1 -y
+# sudo aptitude update
+# sudo aptitude install virtualbox-5.1 -y
 
 #Install fish shell
-# sudo apt-get install fish
+# sudo aptitude install fish
 # chsh -s /usr/bin/fish
 
 #Install ibus-unikey
-sudo apt-get install ibus ibus-unikey ibus-qt4
-
+sudo aptitude install ibus ibus-unikey ibus-qt4 -y
 #Fix chrome duplicate plank
 sudo sed -i "s/\/usr\/bin\/google-chrome-stable/\/usr\/bin\/google-chrome/g" /usr/share/applications/google-chrome.desktop
 sudo sed -i "s/StartupWMClass=Google-chrome-stable//g" /usr/share/applications/google-chrome.desktop
@@ -123,20 +118,20 @@ sudo sed -i "s/StartupWMClass=Google-chrome-stable//g" /usr/share/applications/g
 # bash /tmp/elementary-dropbox/install.sh
 
 #Mailnag
-sudo add-apt-repository ppa:pulb/mailnag -y
-sudo apt-get update
-sudo apt-get install mailnag -y
+sudo -E add-apt-repository ppa:pulb/mailnag -y
+sudo aptitude update
+sudo aptitude install mailnag -y
 
 #Sublime3
-sudo add-apt-repository ppa:webupd8team/sublime-text-3 -y
-sudo apt-get update
-sudo apt-get install sublime-text-installer -y
+sudo -E add-apt-repository ppa:webupd8team/sublime-text-3 -y
+sudo aptitude update
+sudo aptitude install sublime-text-installer -y
 
 #Install Vim
-sudo apt-get install vim -y
+sudo aptitude install vim -y
 
 #Install more packages
-# sudo apt-get install vim aptitude shutter tomboy -y
+# sudo aptitude install vim aptitude shutter tomboy -y
 
 #Install screenfetch (my elementary-OS special Version)
 # mkdir screenfetch
@@ -155,20 +150,38 @@ sudo apt-get install vim -y
 # screenfetch -D "Abraão Silva"
 
 #Install more packages
-# sudo apt-add-repositories ppa:maarten-baert/simplescreenrecorder -y && sudo apt-get update
-# sudo apt-get install vim aptitude apt-file qbittorrent quiterss dconf-editor gnome-system-monitor simplescreenrecorder quassel-qt4 bleachbit kid3-qt calibre pinta unetbootin gnome-disk-utility vlc browser-plugin-vlc -y
-
-
+# sudo apt-add-repositories ppa:maarten-baert/simplescreenrecorder -y && sudo aptitude update
+# sudo aptitude install vim aptitude apt-file qbittorrent quiterss dconf-editor gnome-system-monitor simplescreenrecorder quassel-qt4 bleachbit kid3-qt calibre pinta unetbootin gnome-disk-utility vlc browser-plugin-vlc -y
 
 #Install Thunderbird
 #if you want install Thunderbird instead of Geary Mail
 #first remove Geary Mail
-sudo apt-get purge geary
+sudo aptitude purge geary -y
 
-sudo add-apt-repository ppa:ubuntu-mozilla-security/ppa -y
-sudo apt-get update
-sudo apt-get install thunderbird -y
+sudo -E add-apt-repository ppa:ubuntu-mozilla-security/ppa -y
+sudo aptitude update
+sudo aptitude install thunderbird -y
 
+# latest kernel check the following url
+# http://kernel.ubuntu.com/~kernel-ppa/mainline/
+# at the moment you can have kernel 4.4.0
+echo "Let us check if your computer is up-to-date"
 
+wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.8.9/linux-headers-4.8.9-040809_4.8.9-040809.201611180631_all.deb
+wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.8.9/linux-headers-4.8.9-040809-generic_4.8.9-040809.201611180631_amd64.deb
+wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.8.9/linux-image-4.8.9-040809-generic_4.8.9-040809.201611180631_amd64.deb
 
+sudo dpkg -i linux*
 
+rm linux-*
+
+echo "Kernel is installed"
+echo "Download files have been deleted"
+
+# Ending
+sudo aptitude -y update
+sudo aptitude -f -y install
+sudo aptitude -y upgrade
+
+sudo aptitude -y autoremove
+sudo aptitude -y autoclean
